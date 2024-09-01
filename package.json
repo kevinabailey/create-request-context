@@ -1,6 +1,6 @@
 {
 	"name": "@kevinabailey/create-request-context",
-	"version": "1.0.0",
+	"version": "0.0.0",
 	"description": "Factory for creating a request context for Remix and React Router loaders and actions.",
 	"homepage": "https://github.com/kevinabailey/create-request-context",
 	"bugs": {
@@ -22,6 +22,8 @@
 		"ci": "npm run build && npm run validate-format && npm run validate-exports && npm run validate-typescript && npm run test",
 		"dev": "vitest",
 		"format": "prettier --write .",
+		"local-release": "changeset version && changeset publish",
+		"prepublishOnly": "npm run ci",
 		"test": "vitest run",
 		"validate-format": "prettier --check .",
 		"validate-exports": "attw --pack . --ignore-rules=cjs-resolves-to-esm",
@@ -29,6 +31,7 @@
 	},
 	"devDependencies": {
 		"@arethetypeswrong/cli": "^0.15.4",
+		"@changesets/cli": "^2.27.7",
 		"prettier": "^3.3.3",
 		"tsup": "^8.2.4",
 		"typescript": "^5.5.4",
