@@ -15,14 +15,23 @@
 		"dist"
 	],
 	"type": "module",
+	"main": "dist/index.js",
 	"license": "MIT",
 	"scripts": {
-		"build": "tsc",
-		"ci": "npm run build",
-		"format": "prettier --write ."
+		"build": "tsup",
+		"ci": "npm run build && npm run validate-format && npm run validate-exports && npm run validate-typescript && npm run test",
+		"dev": "vitest",
+		"format": "prettier --write .",
+		"test": "vitest run",
+		"validate-format": "prettier --check .",
+		"validate-exports": "attw --pack . --ignore-rules=cjs-resolves-to-esm",
+		"validate-typescript": "tsc"
 	},
 	"devDependencies": {
+		"@arethetypeswrong/cli": "^0.15.4",
 		"prettier": "^3.3.3",
-		"typescript": "^5.5.4"
+		"tsup": "^8.2.4",
+		"typescript": "^5.5.4",
+		"vitest": "^2.0.5"
 	}
 }
