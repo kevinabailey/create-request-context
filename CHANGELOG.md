@@ -1,5 +1,11 @@
 # @kevinabailey/create-request-context
 
+## 1.0.0
+
+### Major Changes
+
+-   7951eb2: Moved and setup new package
+
 ## 0.1.1
 
 ### Patch Changes
