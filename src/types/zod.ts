@@ -1,16 +1,5 @@
-import { z } from 'zod'
-
-/**
- * Helper type to get the inferred type from a zod schema, if no schema is provided, it uses a default, which defaults to undefined.
- */
-export type ZodInferredOrDefault<
-	TSchema extends z.ZodTypeAny | undefined = undefined,
-	TDefault = undefined,
-> = TSchema extends undefined
-	? TDefault
-	: TSchema extends z.ZodTypeAny
-		? z.infer<TSchema>
-		: never
+import type * as z3 from 'zod/v3'
+import type * as z4 from 'zod/v4/core'
 
 /**
  * Base event object for Zod schema parsing failures.
@@ -18,7 +7,7 @@ export type ZodInferredOrDefault<
  */
 export type ZodParseErrorEventBase = {
 	/** The Zod error details. */
-	error: z.ZodError
+	error: ZodError
 }
 
 /**
@@ -28,3 +17,24 @@ export type ZodParseErrorEventBase = {
 export type ZodParseErrorEventHandler<
 	TEvent extends ZodParseErrorEventBase = ZodParseErrorEventBase,
 > = (event: TEvent) => Promise<void> | void
+
+/**
+ * Infers the type based on a Zod v3 or v4 schema
+ */
+export type ZodInferred<TSchema> = TSchema extends z3.ZodTypeAny
+	? z3.infer<TSchema>
+	: TSchema extends z4.$ZodType
+		? z4.infer<TSchema>
+		: never
+
+/**
+ * Zod v3 or v4 schema
+ */
+export type ZodSchema = z3.ZodTypeAny | z4.$ZodType
+
+/**
+ * Zod v3 or v4 error
+ */
+export type ZodError = z3.ZodError | z4.$ZodError
+
+export type ZodUnknown = z3.ZodUnknown | z4.$ZodUnknown

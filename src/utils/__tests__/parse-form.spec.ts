@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import * as z3 from 'zod/v3'
 import type {
 	DataFunctionArgs,
 	RequestContextFormDataParserArgs,
@@ -7,16 +7,6 @@ import type {
 import { parseForm } from '../parse-form'
 
 describe('parseForm', () => {
-	test('should return undefined if given no schema', async () => {
-		const result = await parseForm(
-			{ request: new Request('http://localhost/'), params: {} },
-			undefined,
-			{},
-		)
-
-		expect(result).toBeUndefined()
-	})
-
 	test('should parse the form data', async () => {
 		const formData = new FormData()
 		formData.append('name', 'Jimmy')
@@ -28,7 +18,7 @@ describe('parseForm', () => {
 
 		const result = await parseForm(
 			{ request, params: {} },
-			z.object({ name: z.string(), age: z.coerce.number() }),
+			z3.object({ name: z3.string(), age: z3.coerce.number() }),
 			{},
 		)
 
@@ -46,7 +36,7 @@ describe('parseForm', () => {
 		await expect(() =>
 			parseForm(
 				{ request, params: {} },
-				z.object({ name: z.string(), age: z.coerce.number() }),
+				z3.object({ name: z3.string(), age: z3.coerce.number() }),
 				{},
 			),
 		).rejects.toThrowErrorMatchingInlineSnapshot(
@@ -66,7 +56,7 @@ describe('parseForm', () => {
 		await expect(() =>
 			parseForm(
 				{ request, params: {} },
-				z.object({ name: z.string(), age: z.coerce.number() }),
+				z3.object({ name: z3.string(), age: z3.coerce.number() }),
 				{},
 				onParseError,
 			),
@@ -91,7 +81,7 @@ describe('parseForm', () => {
 		await expect(() =>
 			parseForm(
 				{ request, params: {} },
-				z.object({ name: z.string(), age: z.coerce.number() }),
+				z3.object({ name: z3.string(), age: z3.coerce.number() }),
 				{},
 				onParseError,
 			),
@@ -121,7 +111,7 @@ describe('parseForm', () => {
 		await expect(() =>
 			parseForm(
 				mockedDataArgs,
-				z.object({ name: z.string(), age: z.coerce.number() }),
+				z3.object({ name: z3.string(), age: z3.coerce.number() }),
 				context,
 				onParseError,
 			),
@@ -152,7 +142,7 @@ describe('parseForm', () => {
 
 		const result = await parseForm(
 			{ request, params: {} },
-			z.object({ name: z.string(), age: z.coerce.number() }),
+			z3.object({ name: z3.string(), age: z3.coerce.number() }),
 			{},
 			undefined,
 			customParser,

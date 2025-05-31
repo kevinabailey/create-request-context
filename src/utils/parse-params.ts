@@ -1,9 +1,9 @@
-import type { z } from 'zod'
 import type {
 	DataFunctionArgs,
 	RequestContextZodParseErrorEventHandler,
-	ZodInferredOrDefault,
+	ZodSchema,
 } from '../types'
+import { zodSafeParse } from './zod-safe-parse'
 
 /**
  * If a paramsSchema was given, it then parses the params
@@ -13,32 +13,20 @@ import type {
  * @param onParseError optional handler for when zod fails to parse the params
  * @returns a type safe object of params
  */
-export async function parseParams<
-	TParamsSchema extends z.ZodTypeAny | undefined = undefined,
-	TContext extends {} = {},
->(
+export async function parseParams<TContext extends {}>(
 	dataArgs: DataFunctionArgs,
-	paramsSchema: TParamsSchema,
+	paramsSchema: ZodSchema,
 	context: TContext,
 	onParseError?: RequestContextZodParseErrorEventHandler<TContext>,
 ) {
-	if (paramsSchema) {
-		const result = paramsSchema.safeParse(dataArgs.params)
-		if (result.success) {
-			return result.data as ZodInferredOrDefault<
-				TParamsSchema,
-				DataFunctionArgs['params']
-			>
-		}
-		if (onParseError) {
-			await onParseError({ error: result.error, context, dataArgs })
-		}
-		throw new Error(
-			'Several issues were found while trying to parse the params.',
-		)
+	const result = zodSafeParse(paramsSchema, dataArgs.params)
+	if (result.success) {
+		return result.data
 	}
-	return dataArgs.params as ZodInferredOrDefault<
-		TParamsSchema,
-		DataFunctionArgs['params']
-	>
+	if (onParseError) {
+		await onParseError({ error: result.error, context, dataArgs })
+	}
+	throw new Error(
+		'Several issues were found while trying to parse the params.',
+	)
 }

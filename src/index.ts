@@ -1,4 +1,5 @@
-export { createRequestContextFactory } from './factory'
+export * from './factory'
+export * from './mock-factory'
 export type {
 	RequestContext,
 	RequestContextConfiguratorFunction,

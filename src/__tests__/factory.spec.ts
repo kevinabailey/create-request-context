@@ -1,5 +1,5 @@
-import { z } from 'zod'
-import { createRequestContextFactory } from '..'
+import { z } from 'zod/v3'
+import { createRequestContextFactory } from '../factory'
 
 describe('createRequestContextFactory', () => {
 	test('should create a basic createRequestContext', async () => {

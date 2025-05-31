@@ -1,8 +1,8 @@
-import type { z } from 'zod'
 import type {
-	ZodInferredOrDefault,
+	ZodInferred,
 	ZodParseErrorEventBase,
 	ZodParseErrorEventHandler,
+	ZodSchema,
 } from './zod'
 
 /**
@@ -24,15 +24,19 @@ export interface DataFunctionArgs {
  * A base RequestContext containing parsed params, queryString and/or form depending on what schemas were given.
  */
 export interface RequestContext<
-	TFormSchema extends z.ZodTypeAny | undefined = undefined,
-	TParamsSchema extends z.ZodTypeAny | undefined = undefined,
-	TQueryStringSchema extends z.ZodTypeAny | undefined = undefined,
-	TJsonSchema extends z.ZodTypeAny | undefined = undefined,
+	TFormSchema extends ZodSchema | undefined = undefined,
+	TParamsSchema extends ZodSchema | undefined = undefined,
+	TQueryStringSchema extends ZodSchema | undefined = undefined,
+	TJsonSchema extends ZodSchema | undefined = undefined,
 > {
-	form: ZodInferredOrDefault<TFormSchema>
-	params: ZodInferredOrDefault<TParamsSchema, DataFunctionArgs['params']>
-	queryString: ZodInferredOrDefault<TQueryStringSchema>
-	json: ZodInferredOrDefault<TJsonSchema>
+	form: TFormSchema extends undefined ? undefined : ZodInferred<TFormSchema>
+	params: TParamsSchema extends undefined
+		? DataFunctionArgs['params']
+		: ZodInferred<TParamsSchema>
+	queryString: TQueryStringSchema extends undefined
+		? undefined
+		: ZodInferred<TQueryStringSchema>
+	json: TJsonSchema extends undefined ? undefined : ZodInferred<TJsonSchema>
 }
 
 /**
@@ -48,10 +52,10 @@ export interface RequestContextFormDataParserArgs<TContext extends {}> {
  */
 export type RequestContextOptions<
 	TContext extends {},
-	TFormSchema extends z.ZodTypeAny | undefined = undefined,
-	TParamsSchema extends z.ZodTypeAny | undefined = undefined,
-	TQueryStringSchema extends z.ZodTypeAny | undefined = undefined,
-	TJsonSchema extends z.ZodTypeAny | undefined = undefined,
+	TFormSchema extends ZodSchema | undefined = undefined,
+	TParamsSchema extends ZodSchema | undefined = undefined,
+	TQueryStringSchema extends ZodSchema | undefined = undefined,
+	TJsonSchema extends ZodSchema | undefined = undefined,
 > = {
 	/**
 	 * Zod Schema to parse and enforce for a submitted form

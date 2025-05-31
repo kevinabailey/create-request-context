@@ -5,7 +5,7 @@ import { isUndefined } from './is-undefined'
 
 export const get = <T>(
 	object: T,
-	path?: string,
+	path?: string | null,
 	defaultValue?: unknown,
 ): any => {
 	if (!path || !isObject(object)) {

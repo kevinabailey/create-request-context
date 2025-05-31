@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import * as z3 from 'zod/v3'
 import type {
 	DataFunctionArgs,
 	RequestContextZodParseErrorEventHandler,
@@ -6,16 +6,6 @@ import type {
 import { parseJson } from '../parse-json'
 
 describe('parseJson', () => {
-	test('should return undefined if given no schema', async () => {
-		const result = await parseJson(
-			{ request: new Request('http://localhost/'), params: {} },
-			undefined,
-			{},
-		)
-
-		expect(result).toBeUndefined()
-	})
-
 	test('should parse the json data', async () => {
 		const request = {
 			json: async () => ({ name: 'Jimmy', age: 5 }),
@@ -23,7 +13,7 @@ describe('parseJson', () => {
 
 		const result = await parseJson(
 			{ request, params: {} },
-			z.object({ name: z.string(), age: z.coerce.number() }),
+			z3.object({ name: z3.string(), age: z3.coerce.number() }),
 			{},
 		)
 
@@ -39,7 +29,7 @@ describe('parseJson', () => {
 		await expect(() =>
 			parseJson(
 				{ request, params: {} },
-				z.object({ name: z.string(), age: z.coerce.number() }),
+				z3.object({ name: z3.string(), age: z3.coerce.number() }),
 				{},
 			),
 		).rejects.toThrowErrorMatchingInlineSnapshot(
@@ -57,7 +47,7 @@ describe('parseJson', () => {
 		await expect(() =>
 			parseJson(
 				{ request, params: {} },
-				z.object({ name: z.string(), age: z.coerce.number() }),
+				z3.object({ name: z3.string(), age: z3.coerce.number() }),
 				{},
 				onParseError,
 			),
@@ -80,7 +70,7 @@ describe('parseJson', () => {
 		await expect(() =>
 			parseJson(
 				{ request, params: {} },
-				z.object({ name: z.string(), age: z.coerce.number() }),
+				z3.object({ name: z3.string(), age: z3.coerce.number() }),
 				{},
 				onParseError,
 			),
@@ -108,7 +98,7 @@ describe('parseJson', () => {
 		await expect(() =>
 			parseJson(
 				mockedDataArgs,
-				z.object({ name: z.string(), age: z.coerce.number() }),
+				z3.object({ name: z3.string(), age: z3.coerce.number() }),
 				context,
 				onParseError,
 			),

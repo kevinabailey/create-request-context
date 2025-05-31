@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import * as z3 from 'zod/v3'
 import type {
 	DataFunctionArgs,
 	RequestContextZodParseErrorEventHandler,
@@ -6,21 +6,6 @@ import type {
 import { parseQueryString } from '../parse-query-string'
 
 describe('parseQueryString', () => {
-	test('should return undefined if given no schema', async () => {
-		const result = await parseQueryString(
-			{
-				request: new Request(
-					'http://localhost/?page=1&size=25&sort=asc',
-				),
-				params: {},
-			},
-			undefined,
-			{},
-		)
-
-		expect(result).toBeUndefined()
-	})
-
 	test('should parse the params data', async () => {
 		const result = await parseQueryString(
 			{
@@ -29,10 +14,10 @@ describe('parseQueryString', () => {
 				),
 				params: {},
 			},
-			z.object({
-				page: z.coerce.number(),
-				size: z.coerce.number(),
-				sort: z.enum(['asc', 'desc']),
+			z3.object({
+				page: z3.coerce.number(),
+				size: z3.coerce.number(),
+				sort: z3.enum(['asc', 'desc']),
 			}),
 			{},
 		)
@@ -51,8 +36,8 @@ describe('parseQueryString', () => {
 					),
 					params: {},
 				},
-				z.object({
-					id: z.coerce.number(),
+				z3.object({
+					id: z3.coerce.number(),
 				}),
 				{},
 			),
@@ -72,8 +57,8 @@ describe('parseQueryString', () => {
 					),
 					params: {},
 				},
-				z.object({
-					id: z.coerce.number(),
+				z3.object({
+					id: z3.coerce.number(),
 				}),
 				{},
 				onParseError,
@@ -98,8 +83,8 @@ describe('parseQueryString', () => {
 					),
 					params: {},
 				},
-				z.object({
-					id: z.coerce.number(),
+				z3.object({
+					id: z3.coerce.number(),
 				}),
 				{},
 				onParseError,
@@ -126,8 +111,8 @@ describe('parseQueryString', () => {
 		await expect(() =>
 			parseQueryString(
 				mockedDataArgs,
-				z.object({
-					id: z.coerce.number(),
+				z3.object({
+					id: z3.coerce.number(),
 				}),
 				context,
 				onParseError,

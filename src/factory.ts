@@ -1,10 +1,10 @@
-import type { z } from 'zod'
 import type {
 	DataFunctionArgs,
 	RequestContext,
 	RequestContextConfiguratorOptions,
 	RequestContextFactoryOptions,
 	RequestContextOptions,
+	ZodSchema,
 } from './types'
 import { parseForm } from './utils/parse-form'
 import { parseJson } from './utils/parse-json'
@@ -34,10 +34,10 @@ export function createRequestContextFactory<
 			: configuratorOrOptions
 
 	return async <
-		TFormSchema extends z.ZodTypeAny | undefined = undefined,
-		TParamsSchema extends z.ZodTypeAny | undefined = undefined,
-		TQueryStringSchema extends z.ZodTypeAny | undefined = undefined,
-		TJsonSchema extends z.ZodTypeAny | undefined = undefined,
+		TFormSchema extends ZodSchema | undefined = undefined,
+		TParamsSchema extends ZodSchema | undefined = undefined,
+		TQueryStringSchema extends ZodSchema | undefined = undefined,
+		TJsonSchema extends ZodSchema | undefined = undefined,
 	>(
 		args: DataFunctionArgs,
 		options?: RequestContextOptions<
@@ -51,43 +51,65 @@ export function createRequestContextFactory<
 	) => {
 		const customContext = await factoryOptions.configurator(args, options)
 
-		const context: RequestContext<
-			TFormSchema,
-			TParamsSchema,
-			TQueryStringSchema,
-			TJsonSchema
-		> = {
-			params: await parseParams(
-				args,
-				unwrapSchema(options?.paramsSchema),
+		// params
+		const paramsSchema = unwrapSchema(options?.paramsSchema)
+		set(
+			customContext,
+			'params',
+			paramsSchema
+				? await parseParams(
+						args,
+						paramsSchema,
+						customContext,
+						factoryOptions.onParamsError,
+					)
+				: args.params,
+		)
+
+		// query string
+		const queryStringSchema = unwrapSchema(options?.queryStringSchema)
+		if (queryStringSchema) {
+			set(
 				customContext,
-				factoryOptions.onParamsError,
-			),
-			queryString: await parseQueryString(
-				args,
-				unwrapSchema(options?.queryStringSchema),
-				customContext,
-				factoryOptions.onQueryStringError,
-			),
-			form: await parseForm(
-				args,
-				unwrapSchema(options?.formSchema),
-				customContext,
-				factoryOptions.onFormError,
-				options?.formDataParser,
-			),
-			json: await parseJson(
-				args,
-				unwrapSchema(options?.jsonSchema),
-				customContext,
-				factoryOptions.onJsonError,
-			),
+				'queryString',
+				await parseQueryString(
+					args,
+					queryStringSchema,
+					customContext,
+					factoryOptions.onQueryStringError,
+				),
+			)
 		}
 
-		set(customContext, 'form', context.form)
-		set(customContext, 'params', context.params)
-		set(customContext, 'queryString', context.queryString)
-		set(customContext, 'json', context.json)
+		// form
+		const formSchema = unwrapSchema(options?.formSchema)
+		if (formSchema) {
+			set(
+				customContext,
+				'form',
+				await parseForm(
+					args,
+					formSchema,
+					customContext,
+					factoryOptions.onFormError,
+				),
+			)
+		}
+
+		// json
+		const jsonSchema = unwrapSchema(options?.jsonSchema)
+		if (jsonSchema) {
+			set(
+				customContext,
+				'json',
+				await parseJson(
+					args,
+					jsonSchema,
+					customContext,
+					factoryOptions.onJsonError,
+				),
+			)
+		}
 
 		return customContext as TContext &
 			RequestContext<
