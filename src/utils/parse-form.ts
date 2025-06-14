@@ -15,9 +15,9 @@ import { zodSafeParse } from './zod-safe-parse'
  * @param onParseError optional handler for when zod fails to parse the form
  * @returns a type safe object
  */
-export async function parseForm<TContext extends {}>(
+export async function parseForm<TSchema extends ZodSchema, TContext extends {}>(
 	dataArgs: DataFunctionArgs,
-	formSchema: ZodSchema,
+	formSchema: TSchema,
 	context: TContext,
 	onParseError?: RequestContextZodParseErrorEventHandler<TContext>,
 	formDataParser?: (

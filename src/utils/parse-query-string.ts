@@ -15,9 +15,12 @@ import { zodSafeParse } from './zod-safe-parse'
  * @param onParseError optional handler for when zod fails to parse the query string
  * @returns a type safe object of the query string
  */
-export async function parseQueryString<TContext extends {}>(
+export async function parseQueryString<
+	TSchema extends ZodSchema,
+	TContext extends {},
+>(
 	dataArgs: DataFunctionArgs,
-	queryStringSchema: ZodSchema,
+	queryStringSchema: TSchema,
 	context: TContext,
 	onParseError?: RequestContextZodParseErrorEventHandler<TContext>,
 ) {

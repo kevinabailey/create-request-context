@@ -1,6 +1,6 @@
 {
 	"name": "@kevinabailey/create-request-context",
-	"version": "1.1.0",
+	"version": "2.0.0",
 	"description": "Factory for creating a request context for Remix and React Router loaders and actions.",
 	"homepage": "https://github.com/kevinabailey/create-request-context",
 	"bugs": {
@@ -31,14 +31,14 @@
 		"validate-typescript": "tsc"
 	},
 	"devDependencies": {
-		"@arethetypeswrong/cli": "^0.18.1",
+		"@arethetypeswrong/cli": "^0.18.2",
 		"@changesets/cli": "^2.29.4",
 		"prettier": "^3.5.3",
 		"tsup": "^8.5.0",
 		"typescript": "^5.8.3",
 		"vite-tsconfig-paths": "^5.1.4",
-		"vitest": "^3.1.4",
-		"zod": "^3.25.42"
+		"vitest": "^3.2.3",
+		"zod": "^3.25.64"
 	},
 	"peerDependencies": {
 		"zod": "^3.25.0"

@@ -1,4 +1,4 @@
-import * as z3 from 'zod/v3'
+import * as z from 'zod/v4'
 import type {
 	DataFunctionArgs,
 	RequestContextZodParseErrorEventHandler,
@@ -9,8 +9,8 @@ describe('parseParams', () => {
 	test('should parse the params data', async () => {
 		const result = await parseParams(
 			{ request: {} as Request, params: { page: '5' } },
-			z3.object({
-				page: z3.coerce.number(),
+			z.object({
+				page: z.coerce.number(),
 			}),
 			{},
 		)
@@ -22,8 +22,8 @@ describe('parseParams', () => {
 		await expect(() =>
 			parseParams(
 				{ request: {} as Request, params: { foo: 'bar' } },
-				z3.object({
-					page: z3.coerce.number(),
+				z.object({
+					page: z.coerce.number(),
 				}),
 				{},
 			),
@@ -38,8 +38,8 @@ describe('parseParams', () => {
 		await expect(() =>
 			parseParams(
 				{ request: {} as Request, params: { foo: 'bar' } },
-				z3.object({
-					page: z3.coerce.number(),
+				z.object({
+					page: z.coerce.number(),
 				}),
 				{},
 				onParseError,
@@ -59,8 +59,8 @@ describe('parseParams', () => {
 		await expect(() =>
 			parseParams(
 				{ request: {} as Request, params: { foo: 'bar' } },
-				z3.object({
-					page: z3.coerce.number(),
+				z.object({
+					page: z.coerce.number(),
 				}),
 				{},
 				onParseError,
@@ -87,8 +87,8 @@ describe('parseParams', () => {
 		await expect(() =>
 			parseParams(
 				mockedDataArgs,
-				z3.object({
-					page: z3.coerce.number(),
+				z.object({
+					page: z.coerce.number(),
 				}),
 				context,
 				onParseError,

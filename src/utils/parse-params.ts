@@ -13,9 +13,12 @@ import { zodSafeParse } from './zod-safe-parse'
  * @param onParseError optional handler for when zod fails to parse the params
  * @returns a type safe object of params
  */
-export async function parseParams<TContext extends {}>(
+export async function parseParams<
+	TSchema extends ZodSchema,
+	TContext extends {},
+>(
 	dataArgs: DataFunctionArgs,
-	paramsSchema: ZodSchema,
+	paramsSchema: TSchema,
 	context: TContext,
 	onParseError?: RequestContextZodParseErrorEventHandler<TContext>,
 ) {

@@ -1,4 +1,4 @@
-import * as z3 from 'zod/v3'
+import * as z from 'zod/v4'
 import type {
 	DataFunctionArgs,
 	RequestContextZodParseErrorEventHandler,
@@ -13,7 +13,7 @@ describe('parseJson', () => {
 
 		const result = await parseJson(
 			{ request, params: {} },
-			z3.object({ name: z3.string(), age: z3.coerce.number() }),
+			z.object({ name: z.string(), age: z.coerce.number() }),
 			{},
 		)
 
@@ -29,7 +29,7 @@ describe('parseJson', () => {
 		await expect(() =>
 			parseJson(
 				{ request, params: {} },
-				z3.object({ name: z3.string(), age: z3.coerce.number() }),
+				z.object({ name: z.string(), age: z.coerce.number() }),
 				{},
 			),
 		).rejects.toThrowErrorMatchingInlineSnapshot(
@@ -47,7 +47,7 @@ describe('parseJson', () => {
 		await expect(() =>
 			parseJson(
 				{ request, params: {} },
-				z3.object({ name: z3.string(), age: z3.coerce.number() }),
+				z.object({ name: z.string(), age: z.coerce.number() }),
 				{},
 				onParseError,
 			),
@@ -70,7 +70,7 @@ describe('parseJson', () => {
 		await expect(() =>
 			parseJson(
 				{ request, params: {} },
-				z3.object({ name: z3.string(), age: z3.coerce.number() }),
+				z.object({ name: z.string(), age: z.coerce.number() }),
 				{},
 				onParseError,
 			),
@@ -98,7 +98,7 @@ describe('parseJson', () => {
 		await expect(() =>
 			parseJson(
 				mockedDataArgs,
-				z3.object({ name: z3.string(), age: z3.coerce.number() }),
+				z.object({ name: z.string(), age: z.coerce.number() }),
 				context,
 				onParseError,
 			),

@@ -1,4 +1,4 @@
-import * as z3 from 'zod/v3'
+import * as z from 'zod/v4'
 import type {
 	DataFunctionArgs,
 	RequestContextZodParseErrorEventHandler,
@@ -14,10 +14,10 @@ describe('parseQueryString', () => {
 				),
 				params: {},
 			},
-			z3.object({
-				page: z3.coerce.number(),
-				size: z3.coerce.number(),
-				sort: z3.enum(['asc', 'desc']),
+			z.object({
+				page: z.coerce.number(),
+				size: z.coerce.number(),
+				sort: z.enum(['asc', 'desc']),
 			}),
 			{},
 		)
@@ -36,8 +36,8 @@ describe('parseQueryString', () => {
 					),
 					params: {},
 				},
-				z3.object({
-					id: z3.coerce.number(),
+				z.object({
+					id: z.coerce.number(),
 				}),
 				{},
 			),
@@ -57,8 +57,8 @@ describe('parseQueryString', () => {
 					),
 					params: {},
 				},
-				z3.object({
-					id: z3.coerce.number(),
+				z.object({
+					id: z.coerce.number(),
 				}),
 				{},
 				onParseError,
@@ -83,8 +83,8 @@ describe('parseQueryString', () => {
 					),
 					params: {},
 				},
-				z3.object({
-					id: z3.coerce.number(),
+				z.object({
+					id: z.coerce.number(),
 				}),
 				{},
 				onParseError,
@@ -111,8 +111,8 @@ describe('parseQueryString', () => {
 		await expect(() =>
 			parseQueryString(
 				mockedDataArgs,
-				z3.object({
-					id: z3.coerce.number(),
+				z.object({
+					id: z.coerce.number(),
 				}),
 				context,
 				onParseError,

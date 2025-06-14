@@ -13,9 +13,9 @@ import { zodSafeParse } from './zod-safe-parse'
  * @param onParseError optional handler for when zod fails to parse the json
  * @returns a type safe object
  */
-export async function parseJson<TContext extends {}>(
+export async function parseJson<TSchema extends ZodSchema, TContext extends {}>(
 	dataArgs: DataFunctionArgs,
-	jsonSchema: ZodSchema,
+	jsonSchema: TSchema,
 	context: TContext,
 	onParseError?: RequestContextZodParseErrorEventHandler<TContext>,
 ) {
