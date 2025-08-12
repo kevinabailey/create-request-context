@@ -1,5 +1,11 @@
 # @kevinabailey/create-request-context
 
+## 2.2.0
+
+### Minor Changes
+
+- e31e3c6: Added zod v4 support
+
 ## 1.0.0
 
 ### Major Changes
